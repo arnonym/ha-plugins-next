@@ -90,3 +90,5 @@ so I do not need to answer the call when not necessary.
 
 1. Handle incoming calls with PIN protection?
 2. Go back to main menu with # key or something?
+
+docker run --rm --privileged -v $HOME/repos/ha-plugins/ha-sip:/data -v /var/run/docker.sock:/var/run/docker.sock:ro homeassistant/amd64-builder --all -t /data --docker-user agellhaus --docker-hub-check
