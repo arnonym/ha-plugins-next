@@ -5,6 +5,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 import yaml
+import os
 
 import account
 import call
@@ -43,6 +44,9 @@ def load_menu_from_file(file_name: Optional[str], sip_account_index: int) -> Opt
 def main():
     load_dotenv()
     import config
+
+    mqtt_mode = config.COMMAND_SOURCE.lower() == 'mqtt'
+
     name_server = [ns.strip() for ns in config.NAME_SERVER.split(",")]
     name_server_without_empty = [ns for ns in name_server if ns]
     if name_server_without_empty:
@@ -104,11 +108,11 @@ def main():
 
     if mqtt_mode:
         # Configuration
-        broker_address = config.BROKER_ADDRESS  # Update this
-        port = utils.convert_to_int(config.BROKER_PORT,1833)  # Update this if your broker uses a different port
-        mqtt_username = config.BROKER_USERNAME  # Update this
-        mqtt_password = config.BROKER_PASSWORD  # Update this
-        topic = config.MQTT_TOPIC  # Update this
+        broker_address = os.environ.get('BROKER_ADDRESS','')
+        port = utils.convert_to_int(os.environ.get('BROKER_PORT','1833'))
+        mqtt_username = os.environ.get('BROKER_USERNAME','')
+        mqtt_password = os.environ.get('BROKER_PASSWORD','')
+        topic = os.environ.get('MQTT_TOPIC','hasip/execute')
 
         mqtt_client = MQTTClient(broker_address, port, mqtt_username, mqtt_password, topic, command_handler)
         mqtt_client.connect()
