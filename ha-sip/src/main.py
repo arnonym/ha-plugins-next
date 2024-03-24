@@ -13,8 +13,10 @@ import incoming_call
 import sip
 import state
 import utils
+import paho.mqtt.client as mqtt
 from command_client import CommandClient
 from command_handler import CommandHandler
+from mqtt import MQTTClient
 from log import log
 
 
@@ -43,6 +45,7 @@ def main():
         import config_local as config
     else:
         import config
+    mqtt_mode = config.MQTT.lower() == 'true'
     name_server = [ns.strip() for ns in config.NAME_SERVER.split(",")]
     name_server_without_empty = [ns for ns in name_server if ns]
     if name_server_without_empty:
@@ -97,11 +100,26 @@ def main():
     is_first_enabled_account = True
     command_client = CommandClient()
     command_handler = CommandHandler(end_point, sip_accounts, call_state, ha_config)
-    for key, config in account_configs.items():
-        if config.enabled:
-            sip_accounts[key] = account.create_account(end_point, config, command_handler, ha_config, is_first_enabled_account)
+    for key, account_config in account_configs.items():
+        if account_config.enabled:
+            sip_accounts[key] = account.create_account(end_point, account_config, command_handler, ha_config, is_first_enabled_account)
             is_first_enabled_account = False
+
+    if mqtt_mode:
+        # Configuration
+        broker_address = config.BROKER_ADDRESS  # Update this
+        port = utils.convert_to_int(config.BROKER_PORT,1833)  # Update this if your broker uses a different port
+        mqtt_username = config.BROKER_USERNAME  # Update this
+        mqtt_password = config.BROKER_PASSWORD  # Update this
+        topic = config.MQTT_TOPIC  # Update this
+
+        mqtt_client = MQTTClient(broker_address, port, mqtt_username, mqtt_password, topic, command_handler)
+        mqtt_client.connect()
+
+
     while True:
+        if mqtt_mode:
+            mqtt_client.loop()
         end_point.libHandleEvents(20)
         handle_command_list(command_client, command_handler)
         for c in list(call_state.current_call_dict.values()):
