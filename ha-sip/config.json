@@ -1,6 +1,6 @@
 {
     "name": "ha-sip-next",
-    "version": "3.6",
+    "version": "3.7-beta4",
     "slug": "ha-sip-next",
     "url": "https://github.com/arnonym/ha-plugins-next",
     "description": "Home-Assistant SIP Gateway (next version)",

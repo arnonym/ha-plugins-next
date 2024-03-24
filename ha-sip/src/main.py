@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import faulthandler
-import sys
 from typing import Optional
 
+from dotenv import load_dotenv
 import yaml
 
 import account
@@ -41,11 +41,8 @@ def load_menu_from_file(file_name: Optional[str], sip_account_index: int) -> Opt
 
 
 def main():
-    if "local" in sys.argv:
-        import config_local as config
-    else:
-        import config
-    mqtt_mode = config.MQTT.lower() == 'true'
+    load_dotenv()
+    import config
     name_server = [ns.strip() for ns in config.NAME_SERVER.split(",")]
     name_server_without_empty = [ns for ns in name_server if ns]
     if name_server_without_empty:
