@@ -10,12 +10,12 @@
 
 ## Installation
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Farnonym%2Fha-plugins)
+[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Farnonym%2Fha-plugins-next)
 
 This add-on is for the Home Assistant OS or supervised installation methods mentioned in
 https://www.home-assistant.io/installation/. With that in place you can install this third-party plug-in like described in
 https://www.home-assistant.io/common-tasks/os#installing-third-party-add-ons. The repository URL is
-`https://github.com/arnonym/ha-plugins`.
+`https://github.com/arnonym/ha-plugins-next`.
 
 > **Note:**
 > Alternatively you can run ha-sip in a stand-alone mode (for Home Assistant Container installations). 
@@ -73,7 +73,7 @@ your automation:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: dial
         number: sip:**620@fritz.box # number to call. Format depends on your SIP provider, 
@@ -101,7 +101,7 @@ If there is already an outgoing call to the same number active, the request will
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: hangup
         number: sip:**620@fritz.box
@@ -112,7 +112,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: send_dtmf
         number: sip:**620@fritz.box
@@ -131,7 +131,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: transfer
         number: sip:**620@fritz.box
@@ -143,7 +143,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: bridge_audio
         number: sip:**620@fritz.box
@@ -155,7 +155,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: play_message
         number: sip:**620@fritz.box
@@ -168,7 +168,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: play_audio_file
         number: sip:**620@fritz.box
@@ -180,7 +180,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: stop_playback
         number: sip:**620@fritz.box
@@ -212,7 +212,7 @@ You can also answer an incoming call from home assistant by using the `hassio.ad
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: answer
         number: "5551234456" # if this is unclear, you can look that up in the logs ("Registering call with id <number>")
@@ -430,7 +430,7 @@ For most events in ha-sip there's a web-hook triggered:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: dial
         number: sip:**620@fritz.box
@@ -465,7 +465,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: dial
         number: sip:**620@fritz.box
@@ -480,7 +480,7 @@ data:
 ```yaml
 service: hassio.addon_stdin
 data:
-    addon: c7744bff_ha-sip
+    addon: 8cd50eef_ha-sip-next
     input:
         command: dial
         number: sip:**620@fritz.box
