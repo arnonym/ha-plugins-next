@@ -10,7 +10,7 @@ class MQTTClient:
                  username: str,
                  password: str,
                  topic: str,
-                 command_handler: callable
+                 command_handler: CommandClient
         ):
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.broker_address = broker_address
