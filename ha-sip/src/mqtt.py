@@ -47,7 +47,7 @@ class MQTTClient:
     def connect(self):
         self.client.connect(self.broker_address, self.port, 60)
 
-    def loop(self):
+    def handle(self):
         if not self.client.is_connected():
             try:
                 self.client.reconnect()
