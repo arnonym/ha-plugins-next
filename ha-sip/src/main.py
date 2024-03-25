@@ -6,7 +6,7 @@ from typing import Optional
 from dotenv import load_dotenv
 import yaml
 import os
-
+import time
 import account
 import call
 import ha
@@ -107,19 +107,22 @@ def main():
             is_first_enabled_account = False
 
     if mqtt_mode:
-        # Configuration
         broker_address = os.environ.get('BROKER_ADDRESS','')
         port = utils.convert_to_int(os.environ.get('BROKER_PORT','1833'))
         mqtt_username = os.environ.get('BROKER_USERNAME','')
         mqtt_password = os.environ.get('BROKER_PASSWORD','')
         topic = os.environ.get('MQTT_TOPIC','hasip/execute')
-
         mqtt_client = MQTTClient(broker_address, port, mqtt_username, mqtt_password, topic, command_handler)
         mqtt_client.connect()
 
-
     while True:
         if mqtt_mode:
+            if not mqtt_client.is_connected():
+                try:
+                    mqtt_client.reconnect()
+                except:
+                    log(None, 'Reconnect to mqtt broker failed. Trying again....')
+                    time.sleep(1)
             mqtt_client.loop()
         end_point.libHandleEvents(20)
         handle_command_list(command_client, command_handler)
