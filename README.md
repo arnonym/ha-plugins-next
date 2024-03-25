@@ -542,7 +542,7 @@ The stand-alone mode can be used if you run home assistant in a docker enviornme
 2. Copy `.env.example` to `.env` and replace the variable place-holders with your real configuration.
 3. Make sure you switched the COMMAND_SOURCE in your .env file from "stdin" to "mqtt" and set the BROKER_* variables to connect to your MQTT broker address
 4. Install [docker compose plugin](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
-5. Run docker compose up -d in main folder to run the ha-sip service
+5. Run docker compose up -d in the main folder of the application to run the ha-sip service
 6. Now you can use the mqtt.publish service in home assistant to send commands as json to the hasip/execute topic from your automations
 
    Example:
