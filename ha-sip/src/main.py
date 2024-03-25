@@ -117,12 +117,6 @@ def main():
 
     while True:
         if mqtt_mode:
-            if not mqtt_client.is_connected():
-                try:
-                    mqtt_client.reconnect()
-                except:
-                    log(None, 'Reconnect to mqtt broker failed. Trying again....')
-                    time.sleep(1)
             mqtt_client.loop()
         end_point.libHandleEvents(20)
         handle_command_list(command_client, command_handler)

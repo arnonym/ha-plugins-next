@@ -48,4 +48,10 @@ class MQTTClient:
         self.client.connect(self.broker_address, self.port, 60)
 
     def loop(self):
+        if not self.client.is_connected():
+            try:
+                self.client.reconnect()
+            except:
+                log(None, 'Reconnect to mqtt broker failed. Trying again....')
+                time.sleep(1)
         self.client.loop()
