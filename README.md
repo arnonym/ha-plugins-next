@@ -554,7 +554,7 @@ The stand-alone mode can be used if you run home assistant in a docker enviornme
             topic: hasip/execute
     ```
 
-If you need to run the service on another architecture than amd64, you need to change the BUILD_FROM variable in the docker-compose file. Available architectures are:
+If you need to run the service on another architecture different from amd64, you need to change the BUILD_FROM variable in the docker-compose file. Available architectures are:
 - homeassistant/aarch64-base-python
 - homeassistant/armhf-base-python
 - homeassistant/armv7-base-python
