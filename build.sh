@@ -14,8 +14,8 @@ fi
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 
 case "$1" in
-    build-next)
-        echo "Building on next repo (aarch64 only)..."
+    update-next-repo)
+        echo "Updating next repo..."
         rm -rf $TMP_URL
         git clone -b next $REPO_URL $TMP_URL
         # Change repo
@@ -45,19 +45,31 @@ case "$1" in
         git commit -a -m "Changes for next repository."
         git remote set-url origin $NEXT_REPO_SSH
         git push --force
+        ;;
+    build-next)
+        echo "Building next repo (aarch64 only)..."
         docker run \
             --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock:ro \
-            homeassistant/amd64-builder:dev \
-            --no-cache --aarch64 --amd64 \
+            homeassistant/aarch64-builder:dev \
+            --no-cache --aarch64 \
             -t ha-sip -r $NEXT_REPO_URL -b next \
             --docker-user agellhaus --docker-password "$DOCKER_HUB_PASSWORD"
         ;;
-    build)
+    build-amd64)
         echo "Building prod (all archs)..."
         docker run \
             --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock:ro \
             homeassistant/amd64-builder:dev \
-            --no-cache --all \
+            --no-cache --amd64 --i386 \
+            -t ha-sip -r $REPO_URL -b next \
+            --docker-user agellhaus --docker-password "$DOCKER_HUB_PASSWORD"
+        ;;
+    build-arm)
+        echo "Building prod (all archs)..."
+        docker run \
+            --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock:ro \
+            homeassistant/aarch64-builder:dev \
+            --no-cache --aarch64 --armv7 --armhf \
             -t ha-sip -r $REPO_URL -b next \
             --docker-user agellhaus --docker-password "$DOCKER_HUB_PASSWORD"
         ;;
@@ -82,12 +94,12 @@ case "$1" in
         rm -rf "$SCRIPT_DIR"/venv "$SCRIPT_DIR"/deps
         python3 -m venv "$SCRIPT_DIR"/venv
         source "$SCRIPT_DIR"/venv/bin/activate
-        pip3 install pydub requests PyYAML typing_extensions pyright python-dotenv paho-mqtt
+        pip3 install pydub requests PyYAML typing_extensions pyright python-dotenv paho-mqtt setuptools audioop-lts
         mkdir "$SCRIPT_DIR"/deps
         cd "$SCRIPT_DIR"/deps || exit
-        git clone --depth 1 --branch 2.14.1 https://github.com/pjsip/pjproject.git
+        git clone --depth 1 --branch 2.15.1 https://github.com/pjsip/pjproject.git
         cd pjproject || exit
-        ./configure --enable-shared --disable-libwebrtc --prefix "$SCRIPT_DIR"/venv
+        ./configure CFLAGS="-O3 -DNDEBUG -fPIC" --enable-shared --disable-libwebrtc --prefix "$SCRIPT_DIR"/venv
         make
         make dep
         make install
@@ -97,7 +109,7 @@ case "$1" in
         python setup.py install
         ;;
     *)
-        echo "Supply one of 'build-next', 'build', 'test', 'update', 'run-local' or 'create-venv'"
+        echo "Supply one of 'update-next-repo', 'build-next', 'build-amd64', 'build-arm', 'test', 'update', 'run-local' or 'create-venv'"
         exit 1
         ;;
 esac

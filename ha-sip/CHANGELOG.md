@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0
+- Updated pjsip to latest version
+
 ## 3.9
 - Add option to ignore DTMF tones until message/audio file has finished to play
 
