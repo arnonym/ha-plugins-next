@@ -1,10 +1,10 @@
 import json
-import os
 import time
 
 import paho.mqtt.client as paho_mqtt
 from paho.mqtt.enums import CallbackAPIVersion
 
+import config
 from log import log
 from command_client import CommandClient
 from command_handler import CommandHandler
@@ -75,12 +75,12 @@ class MqttClient:
         self.client.publish(self.topic_state, json.dumps(event))
 
 def create_client_and_connect(command_handler: CommandHandler) -> MqttClient:
-    broker_address = os.environ.get('BROKER_ADDRESS', '')
-    port = utils.convert_to_int(os.environ.get('BROKER_PORT', '1833'))
-    mqtt_username = os.environ.get('BROKER_USERNAME', '')
-    mqtt_password = os.environ.get('BROKER_PASSWORD', '')
-    topic = os.environ.get('MQTT_TOPIC', 'hasip/execute')
-    topic_state = os.environ.get('MQTT_STATE_TOPIC', 'hasip/state')
+    broker_address = config.BROKER_ADDRESS
+    port = utils.convert_to_int(config.BROKER_PORT, 1883)
+    mqtt_username = config.MQTT_USERNAME
+    mqtt_password = config.MQTT_PASSWORD
+    topic = config.MQTT_TOPIC
+    topic_state = config.MQTT_TOPIC_STATE
     client = MqttClient(broker_address, port, mqtt_username, mqtt_password, topic, topic_state, command_handler)
     client.connect()
     return client
